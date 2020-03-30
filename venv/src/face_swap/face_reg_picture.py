@@ -15,8 +15,8 @@ from face_detect_landmark import warp_im
 from color_transfer import recolor
 from affine_triangle import transform
 
-model = cv2.imread('images/model4.jpg', 1)
-user = cv2.imread('images/user.jpg', 1)
+model = cv2.imread('images/nam.jpg', 1)
+user = cv2.imread('images/khang.jpg', 1)
 
 # user = cv2.resize(user,(600,800))
 # model = cv2.resize(model,(600,800))
@@ -37,7 +37,7 @@ divUser  = get_delaunay_array(user,modelPts)
 #
 # result = cv2.resize(result,(userSize[1],userSize[0]));
 
-#draw_delaunay(model, divModel, (255, 255, 255))
+draw_delaunay(model, divModel, (255, 255, 255))
 cv2.imshow('User',user)
 cv2.imshow('Model',model)
 

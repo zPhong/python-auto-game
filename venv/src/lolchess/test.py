@@ -10,14 +10,14 @@ from PIL import ImageGrab
 play_btn = [[200,0,0],[250,250,255]]
 start_btn = [[30,35,30],[50,50,50]]
 avatar = [[0,0,94],[42,21,250]]
-exit_btn = [[88,51,67],[162,207,230]]
+exit_btn = [[82,69,8],[186,120,12]]
 
 def check_white_px_in_rect(image,rect,limit = 1,name='B'):
     count = cv2.countNonZero(image[rect[1]:rect[1] + rect[3],rect[0]:rect[0] + rect[2]])
     cv2.imshow(name,image[rect[1]:rect[1] + rect[3],rect[0]:rect[0] + rect[2]])
-    cv2.imwrite("images/exit-btn.png",image[rect[1]:rect[1] + rect[3], rect[0]:rect[0] + rect[2]])
+    #cv2.imwrite("images/loss-all-hp.png",image[rect[1]:rect[1] + rect[3], rect[0]:rect[0] + rect[2]])
     print(count/(rect[2]*rect[3]))
-    if count > (rect[2]*rect[3])*0.025 and count < rect[2]*rect[3]*limit: #~ 33%
+    if count > (rect[2]*rect[3])*0.25 and count < rect[2]*rect[3]*limit: #~ 33%
         print("1")
         return 1
 
@@ -50,32 +50,29 @@ def sellChampion():
     time.sleep(1)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,450, 743, 0, 0)
 
+#550,10,27,12
+def compareImage(image):
+    i1 = cv2.imread('images\\round-end.png',1)
+    i2 = image[10:22,550:577]
+    cv2.imwrite('images\\round-end.png',i2)
+    cv2.imshow('1',i1);
+    cv2.imshow('2',i2);
+    difference = cv2.subtract(i1, i2)
+    b, g, r = cv2.split(difference)
+    if cv2.countNonZero(b) == 0 and cv2.countNonZero(g) == 0 and cv2.countNonZero(r) == 0:
+        return True;
+    return False
+
+def clickSurrender():
+    click(1355,630)
+    time.sleep(5)
+    click(490,695)
+    time.sleep(5)
+    click(610,430)
+    time.sleep(10)
 
 
-
-time.sleep(5)
-
-isJoinGame = False
-isPressStart = False
-
-#img = cv2.imread('images/loss-all-hp.png', 1)
-img = cv2.imread('images/loss-all-hp.png', 1)
-img_2 = cv2.imread('images/landing.png',1)
-
-
-res = cv2.inRange(img,  np.array(exit_btn[0])  , np.array(exit_btn[1]))
-res2 =  cv2.inRange(img_2,  np.array(start_btn[0])  , np.array(start_btn[1]))
-cv2.imshow('2',img_2[626:626 + 37,530:530 + 138])
-check_white_px_in_rect(res,[510,362,161,36],0.04,'A')
-# check_white_px_in_rect(res2,[530, 626, 138, 37])
-
-# print(isHaveGame)
-# if isHaveGame == True:
-#     print('done')
-# if check_white_px_in_rect(cv2.inRange(img,  np.array(avatar[0])  , np.array(avatar[1])),[570,232,48,38]) == False:
-#     time.sleep(10)
-#     isJoinGame = True
-#
+compareImage()
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
