@@ -71,8 +71,19 @@ def clickSurrender():
     click(610,430)
     time.sleep(10)
 
+def isAgain():
+    i1 = cv2.imread('images\\btn-again.png',1)
+    i2 = cv2.imread('images\\again.png')[635:650,570:630]
+    cv2.imshow('1', i1);
+    cv2.imshow('2', i2);
+    cv2.imwrite('images\\btn-again.png',i2)
+    difference = cv2.subtract(i1, i2)
+    b, g, r = cv2.split(difference)
+    if cv2.countNonZero(b) == 0 and cv2.countNonZero(g) == 0 and cv2.countNonZero(r) == 0:
+        return True;
+    return False
 
-compareImage()
+print(isAgain())
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -127,8 +127,6 @@ def logger(str, index, color):
 def compareImage(image):
     i1 = cv2.imread('images\\round-end.png',1)
     i2 = image[10:22,550:577]
-    cv2.imshow('i1',i1)
-    cv2.imshow('i2',i2)
     difference = cv2.subtract(i1, i2)
     b, g, r = cv2.split(difference)
     if cv2.countNonZero(b) == 0 and cv2.countNonZero(g) == 0 and cv2.countNonZero(r) == 0:
@@ -136,7 +134,7 @@ def compareImage(image):
     return False
 
 def isAgain(image):
-    i1 = cv2.imread('isAgain',1)
+    i1 = cv2.imread('images\\btn-again.png',1)
     i2 = image[635:650,570:630]
     difference = cv2.subtract(i1, i2)
     b, g, r = cv2.split(difference)
@@ -148,9 +146,11 @@ def clickSurrender():
     click(1185,630)
     time.sleep(2)
     click(1185,630)
-    time.sleep(3)
+    time.sleep(5)
+    logger('press seting', 0, (66, 66, 70))
     click(490,695)
-    time.sleep(3)
+    time.sleep(10)
+    logger('press surrender', 0, (66, 66, 70))
     click(610,430)
     time.sleep(10)
 
@@ -184,33 +184,43 @@ try:
                 click(680, 550)
                 logger('Press ok',index,(200,1000, 0))
 
-
             if check_is_full_black_px(cv2.cvtColor(img_np,cv2.COLOR_RGB2GRAY), [400, 222, 300, 300]) == True:
                 index += 1
                 logger('Join game',index,(200,1000, 0))
                 index += 1
                 isJoinGame = True
+                isFinishGame = False
         else:
-                #print(compareImage(img_np))
-                #logger('check image', compareImage(img_np), (66, 66, 70))
-            if compareImage(img_np) == True:
-                clickSurrender();
+            # if isFinishGame == False and compareImage(img_np) == True:
+            #     clickSurrender();
+
+            isShowExit = detectExit_btn(cv2.inRange(img_np, np.array(exit_btn[0]), np.array(exit_btn[1])),
+                                        [508, 360, 168, 48], 0.3)
+            if isShowExit == True:
+                print('exit')
+                click(600, 380)
+                time.sleep(2)
+                click(600, 380)
+                time.sleep(5)
+                index += 1
+                logger('Press-exit', index, (100, 24, 10))
+                index += 1
                 isFinishGame = True
-            else:
-                if isAgain(img_np) == True:
-                    time.sleep(2)
-                    logger('Press play again',index, (50, 30, 170))
-                    click(596, 641)
-                    time.sleep(5)
-                    index += 1
-                    logger('Reseting...',index, (50, 30, 170))
-                    index = 1
-                    count += 1
-                    isJoinGame = False
-                    isPressStart = False
-                    isFinishGame = False
-                    exitBtnDetectedCount = 0
-                    reset(count)
+                time.sleep(10)
+
+            if isAgain(img_np) == True:
+                time.sleep(2)
+                logger('Press play again', index, (50, 30, 170))
+                click(596, 641)
+                time.sleep(5)
+                index += 1
+                logger('Reseting...', index, (50, 30, 170))
+                index = 1
+                count += 1
+                isJoinGame = False
+                isPressStart = False
+                exitBtnDetectedCount = 0
+                reset(count)
 
         if cv2.waitKey(1) == 27:
             break
