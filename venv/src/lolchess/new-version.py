@@ -190,23 +190,13 @@ try:
                 index += 1
                 isJoinGame = True
                 isFinishGame = False
+                time.sleep(1200)
         else:
             # if isFinishGame == False and compareImage(img_np) == True:
             #     clickSurrender();
 
             isShowExit = detectExit_btn(cv2.inRange(img_np, np.array(exit_btn[0]), np.array(exit_btn[1])),
                                         [508, 360, 168, 48], 0.3)
-            if isShowExit == True:
-                print('exit')
-                click(600, 380)
-                time.sleep(2)
-                click(600, 380)
-                time.sleep(5)
-                index += 1
-                logger('Press-exit', index, (100, 24, 10))
-                index += 1
-                isFinishGame = True
-                time.sleep(10)
 
             if isAgain(img_np) == True:
                 time.sleep(2)
@@ -222,6 +212,17 @@ try:
                 exitBtnDetectedCount = 0
                 reset(count)
 
+            if isShowExit == True:
+                print('exit')
+                click(600, 380)
+                time.sleep(2)
+                click(600, 380)
+                time.sleep(5)
+                index += 1
+                logger('Press-exit', index, (100, 24, 10))
+                index += 1
+                isFinishGame = True
+                time.sleep(10)
         if cv2.waitKey(1) == 27:
             break
 except NameError:
